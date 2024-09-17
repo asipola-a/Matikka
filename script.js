@@ -26,11 +26,13 @@ function generateQuestions(type, number) {
         let questionText;
         
         if (type === 'plus') {
-            correctAnswer = a + b;
+            // Handle `a + b = ?` and `a + ? = b` types
             if (Math.random() > 0.5) {
+                correctAnswer = a + b;
                 questionText = `${a} + ${b} = ?`;
             } else {
-                questionText = `${a} + ? = ${correctAnswer}`;
+                correctAnswer = b - a;
+                questionText = `${a} + ? = ${b}`;
             }
         } else if (type === 'minus') {
             // Ensure `a` is at least as large as `b` to avoid negative results
@@ -39,16 +41,18 @@ function generateQuestions(type, number) {
             if (Math.random() > 0.5) {
                 questionText = `${a} - ${b} = ?`;
             } else {
+                correctAnswer = a - b;
                 questionText = `${a} - ? = ${correctAnswer}`;
             }
         } else if (type === 'mixed') {
             let operation = Math.random() > 0.5 ? 'plus' : 'minus';
             if (operation === 'plus') {
-                correctAnswer = a + b;
                 if (Math.random() > 0.5) {
+                    correctAnswer = a + b;
                     questionText = `${a} + ${b} = ?`;
                 } else {
-                    questionText = `${a} + ? = ${correctAnswer}`;
+                    correctAnswer = b - a;
+                    questionText = `${a} + ? = ${b}`;
                 }
             } else {
                 if (a < b) [a, b] = [b, a]; 
