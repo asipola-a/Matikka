@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matikkaharjoituksia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="main-container">
+        <div id="welcome-page">
+            <img src="kuva.png" alt="Matikkaharjoituksia" id="header-image">
+            <h1>Matikkaharjoituksia</h1>
+            <button onclick="startQuiz('plus', 10)">Pluslaskut 0-10</button>
+            <button onclick="startQuiz('plus', 50)">Pluslaskut 0-50</button>
+            <button onclick="startQuiz('plus', 100)">Pluslaskut 0-100</button>
+            <button onclick="startQuiz('minus', 10)">Miinuslaskut 0-10</button>
+            <button onclick="startQuiz('minus', 50)">Miinuslaskut 0-50</button>
+            <button onclick="startQuiz('minus', 100)">Miinuslaskut 0-100</button>
+            <button onclick="startQuiz('mixed', 100)">Sekalaiset laskut 0-100</button>
+        </div>
+        <div id="quiz-page" style="display:none;">
+            <div id="question-container"></div>
+            <div id="answer-buttons"></div>
+            <button id="back-button" onclick="goBack()">Keskeytä ja palaa etusivulle</button>
+        </div>
+        <div id="result-page" style="display:none;">
+            <button id="back-button-results" onclick="goBack()">Keskeytä ja palaa etusivulle</button>
+            <h1>Tulokset</h1>
+            <p id="result-text"></p>
+            <button onclick="restartQuiz()">Aloita alusta</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
