@@ -33,9 +33,8 @@ function generateQuestions(type, number) {
                 questionText = `${a} + ? = ${correctAnswer}`;
             }
         } else if (type === 'minus') {
-            if (a < b) {
-                [a, b] = [b, a]; // Swap to ensure a is always greater than or equal to b
-            }
+            // Ensure `a` is at least as large as `b` to avoid negative results
+            if (a < b) [a, b] = [b, a]; 
             correctAnswer = a - b;
             if (Math.random() > 0.5) {
                 questionText = `${a} - ${b} = ?`;
@@ -52,9 +51,7 @@ function generateQuestions(type, number) {
                     questionText = `${a} + ? = ${correctAnswer}`;
                 }
             } else {
-                if (a < b) {
-                    [a, b] = [b, a]; // Swap to ensure a is always greater than or equal to b
-                }
+                if (a < b) [a, b] = [b, a]; 
                 correctAnswer = a - b;
                 if (Math.random() > 0.5) {
                     questionText = `${a} - ${b} = ?`;
@@ -67,7 +64,7 @@ function generateQuestions(type, number) {
         questions.push({
             question: questionText,
             answer: correctAnswer,
-            isComplete: !questionText.includes('?') // Track whether the question is already complete
+            isComplete: !questionText.includes('?')
         });
     }
     return questions;
