@@ -26,41 +26,40 @@ function generateQuestions(type, number) {
         let questionText;
         
         if (type === 'plus') {
-            // Handle `a + b = ?` and `a + ? = b` types
+            correctAnswer = a + b;
             if (Math.random() > 0.5) {
-                correctAnswer = a + b;
                 questionText = `${a} + ${b} = ?`;
             } else {
-                correctAnswer = b - a;
-                questionText = `${a} + ? = ${b}`;
+                questionText = `${a} + ? = ${correctAnswer}`;
+                correctAnswer = b;
             }
         } else if (type === 'minus') {
-            // Ensure `a` is at least as large as `b` to avoid negative results
-            if (a < b) [a, b] = [b, a]; 
+            if (a < b) [a, b] = [b, a]; // Varmistetaan, että a on suurempi tai yhtä suuri kuin b
             correctAnswer = a - b;
             if (Math.random() > 0.5) {
                 questionText = `${a} - ${b} = ?`;
             } else {
-                correctAnswer = a - b;
                 questionText = `${a} - ? = ${correctAnswer}`;
+                correctAnswer = b;
             }
         } else if (type === 'mixed') {
             let operation = Math.random() > 0.5 ? 'plus' : 'minus';
             if (operation === 'plus') {
+                correctAnswer = a + b;
                 if (Math.random() > 0.5) {
-                    correctAnswer = a + b;
                     questionText = `${a} + ${b} = ?`;
                 } else {
-                    correctAnswer = b - a;
-                    questionText = `${a} + ? = ${b}`;
+                    questionText = `${a} + ? = ${correctAnswer}`;
+                    correctAnswer = b;
                 }
             } else {
-                if (a < b) [a, b] = [b, a]; 
+                if (a < b) [a, b] = [b, a];
                 correctAnswer = a - b;
                 if (Math.random() > 0.5) {
                     questionText = `${a} - ${b} = ?`;
                 } else {
                     questionText = `${a} - ? = ${correctAnswer}`;
+                    correctAnswer = b;
                 }
             }
         }
@@ -79,12 +78,19 @@ function showQuestion() {
     document.getElementById('question-container').textContent = question.question;
     document.getElementById('answer-buttons').innerHTML = '';
     const answers = [question.answer];
+    
+    // Lisätään satunnaisia vastausvaihtoehtoja
     while (answers.length < 4) {
         let randomAnswer = Math.floor(Math.random() * (maxNumber + 1));
+        if (quizType === 'minus' || quizType === 'mixed') {
+            randomAnswer = Math.floor(Math.random() * (Math.max(questions[currentQuestionIndex].answer, 10) + 1));
+        }
         if (!answers.includes(randomAnswer)) {
             answers.push(randomAnswer);
         }
     }
+
+    // Sekoitetaan vastausvaihtoehdot
     answers.sort(() => Math.random() - 0.5);
     answers.forEach(answer => {
         const button = document.createElement('button');
