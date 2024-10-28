@@ -20,11 +20,11 @@ function startQuiz(type, number) {
 function generateQuestions(type, number) {
     let questions = [];
     for (let i = 0; i < maxQuestions; i++) {
-        let a = Math.floor(Math.random() * (number + 1));
+        let a = type === 'multiply' ? number : Math.floor(Math.random() * (number + 1));
         let b = Math.floor(Math.random() * (number + 1));
         let correctAnswer;
         let questionText;
-        
+
         if (type === 'plus') {
             correctAnswer = a + b;
             if (Math.random() > 0.5) {
@@ -34,12 +34,20 @@ function generateQuestions(type, number) {
                 correctAnswer = b;
             }
         } else if (type === 'minus') {
-            if (a < b) [a, b] = [b, a]; // Varmistetaan, että a on suurempi tai yhtä suuri kuin b
+            if (a < b) [a, b] = [b, a];
             correctAnswer = a - b;
             if (Math.random() > 0.5) {
                 questionText = `${a} - ${b} = ?`;
             } else {
                 questionText = `${a} - ? = ${correctAnswer}`;
+                correctAnswer = b;
+            }
+        } else if (type === 'multiply') {
+            correctAnswer = a * b;
+            if (Math.random() > 0.5) {
+                questionText = `${a} × ${b} = ?`;
+            } else {
+                questionText = `${a} × ? = ${correctAnswer}`;
                 correctAnswer = b;
             }
         } else if (type === 'mixed') {
@@ -79,18 +87,13 @@ function showQuestion() {
     document.getElementById('answer-buttons').innerHTML = '';
     const answers = [question.answer];
     
-    // Lisätään satunnaisia vastausvaihtoehtoja
     while (answers.length < 4) {
-        let randomAnswer = Math.floor(Math.random() * (maxNumber + 1));
-        if (quizType === 'minus' || quizType === 'mixed') {
-            randomAnswer = Math.floor(Math.random() * (Math.max(questions[currentQuestionIndex].answer, 10) + 1));
-        }
+        let randomAnswer = Math.floor(Math.random() * (maxNumber * 10 + 1));
         if (!answers.includes(randomAnswer)) {
             answers.push(randomAnswer);
         }
     }
 
-    // Sekoitetaan vastausvaihtoehdot
     answers.sort(() => Math.random() - 0.5);
     answers.forEach(answer => {
         const button = document.createElement('button');
