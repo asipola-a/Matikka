@@ -4,240 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matikkaharjoituksia</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-        #main-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        #header-image {
-            width: 150px;
-            height: auto;
-            margin-bottom: 20px;
-        }
-        button {
-            background-color: #00796b;
-            border: none;
-            color: white;
-            padding: 15px 30px;
-            margin: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #004d40;
-        }
-        #question-container {
-            margin-bottom: 20px;
-        }
-        #answer-buttons {
-            margin-bottom: 20px;
-        }
-        #answer-buttons button {
-            display: block;
-            background-color: #004d40;
-            border: none;
-            color: white;
-            padding: 10px;
-            margin: 5px auto;
-            width: 80%;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #answer-buttons button.correct {
-            background-color: #4caf50;
-        }
-        #answer-buttons button.incorrect {
-            background-color: #f44336;
-        }
-        #back-button, #back-button-results {
-            background-color: #ff5722;
-            margin-top: 20px;
-        }
-        #back-button:hover, #back-button-results:hover {
-            background-color: #e64a19;
-        }
-    </style>
-    <script>
-        const maxQuestions = 20;
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let questions = [];
-        let quizType = '';
-        let maxNumber = 0;
-
-        function startQuiz(type, number) {
-            quizType = type;
-            maxNumber = number;
-            questions = generateQuestions(type, number);
-            score = 0;
-            currentQuestionIndex = 0;
-            document.getElementById('welcome-page').style.display = 'none';
-            document.getElementById('quiz-page').style.display = 'block';
-            document.getElementById('result-page').style.display = 'none';
-            showQuestion();
-        }
-
-        function generateQuestions(type, number) {
-            let questions = [];
-            for (let i = 0; i < maxQuestions; i++) {
-                let a = Math.floor(Math.random() * (number + 1));
-                let b = Math.floor(Math.random() * (number + 1));
-                let correctAnswer;
-                let questionText;
-                
-                if (type === 'plus') {
-                    correctAnswer = a + b;
-                    if (Math.random() > 0.5) {
-                        questionText = `${a} + ${b} = ?`;
-                    } else {
-                        questionText = `${a} + ? = ${correctAnswer}`;
-                        correctAnswer = b;
-                    }
-                } else if (type === 'minus') {
-                    if (a < b) [a, b] = [b, a];
-                    correctAnswer = a - b;
-                    if (Math.random() > 0.5) {
-                        questionText = `${a} - ${b} = ?`;
-                    } else {
-                        questionText = `${a} - ? = ${correctAnswer}`;
-                        correctAnswer = b;
-                    }
-                } else if (type === 'mixed') {
-                    let operation = Math.random() > 0.5 ? 'plus' : 'minus';
-                    if (operation === 'plus') {
-                        correctAnswer = a + b;
-                        if (Math.random() > 0.5) {
-                            questionText = `${a} + ${b} = ?`;
-                        } else {
-                            questionText = `${a} + ? = ${correctAnswer}`;
-                            correctAnswer = b;
-                        }
-                    } else {
-                        if (a < b) [a, b] = [b, a];
-                        correctAnswer = a - b;
-                        if (Math.random() > 0.5) {
-                            questionText = `${a} - ${b} = ?`;
-                        } else {
-                            questionText = `${a} - ? = ${correctAnswer}`;
-                            correctAnswer = b;
-                        }
-                    }
-                }
-                
-                questions.push({
-                    question: questionText,
-                    answer: correctAnswer,
-                    isComplete: !questionText.includes('?')
-                });
-            }
-            return questions;
-        }
-
-        function showQuestion() {
-            const question = questions[currentQuestionIndex];
-            document.getElementById('question-container').textContent = question.question;
-            document.getElementById('answer-buttons').innerHTML = '';
-            const answers = [question.answer];
-            while (answers.length < 4) {
-                let randomAnswer = Math.floor(Math.random() * (maxNumber + 1));
-                if (quizType === 'minus' || quizType === 'mixed') {
-                    randomAnswer = Math.floor(Math.random() * (Math.max(questions[currentQuestionIndex].answer, 10) + 1));
-                }
-                if (!answers.includes(randomAnswer)) {
-                    answers.push(randomAnswer);
-                }
-            }
-            answers.sort(() => Math.random() - 0.5);
-            answers.forEach(answer => {
-                const button = document.createElement('button');
-                button.textContent = answer;
-                button.addEventListener('click', () => selectAnswer(button, answer));
-                document.getElementById('answer-buttons').appendChild(button);
-            });
-        }
-
-        function selectAnswer(button, selectedAnswer) {
-            const question = questions[currentQuestionIndex];
-            if (selectedAnswer === question.answer) {
-                score++;
-                button.classList.add('correct');
-                setTimeout(() => button.classList.remove('correct'), 1000);
-            } else {
-                button.classList.add('incorrect');
-                setTimeout(() => button.classList.remove('incorrect'), 1000);
-            }
-            currentQuestionIndex++;
-            if (currentQuestionIndex < maxQuestions) {
-                setTimeout(showQuestion, 1000);
-            } else {
-                setTimeout(showResults, 1000);
-            }
-        }
-
-        function showResults() {
-            document.getElementById('quiz-page').style.display = 'none';
-            const resultText = `Oikein meni ${score} / ${maxQuestions}. `;
-            if (score >= 15) {
-                document.getElementById('result-text').textContent = resultText + 'Hienosti laskettu!';
-            } else if (score < 5) {
-                document.getElementById('result-text').textContent = resultText + 'Nyt pitäisi kyllä harjoitella vielä lisää.';
-            } else {
-                document.getElementById('result-text').textContent = resultText + 'Hyvin tehty!';
-            }
-            document.getElementById('result-page').style.display = 'block';
-        }
-
-        function goBack() {
-            document.getElementById('quiz-page').style.display = 'none';
-            document.getElementById('result-page').style.display = 'none';
-            document.getElementById('welcome-page').style.display = 'block';
-        }
-
-        function restartQuiz() {
-            document.getElementById('result-page').style.display = 'none';
-            document.getElementById('welcome-page').style.display = 'none';
-            document.getElementById('quiz-page').style.display = 'block';
-            currentQuestionIndex = 0;
-            score = 0;
-            showQuestion();
-        }
-    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="main-container">
         <div id="welcome-page">
             <img src="kuva.png" alt="Matikkaharjoituksia" id="header-image">
             <h1>Matikkaharjoituksia</h1>
+            
+            <h2>Pluslaskut</h2>
             <button onclick="startQuiz('plus', 10)">Pluslaskut 0-10</button>
             <button onclick="startQuiz('plus', 50)">Pluslaskut 0-50</button>
             <button onclick="startQuiz('plus', 100)">Pluslaskut 0-100</button>
+            
+            <h2>Miinuslaskut</h2>
             <button onclick="startQuiz('minus', 10)">Miinuslaskut 0-10</button>
             <button onclick="startQuiz('minus', 50)">Miinuslaskut 0-50</button>
             <button onclick="startQuiz('minus', 100)">Miinuslaskut 0-100</button>
+
+            <h2>Kertolaskut</h2>
+            <button onclick="startQuiz('multiply', 1)">1:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 2)">2:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 3)">3:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 4)">4:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 5)">5:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 6)">6:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 7)">7:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 8)">8:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 9)">9:n kertotaulu</button>
+            <button onclick="startQuiz('multiply', 10)">10:n kertotaulu</button>
+
+            <h2>Sekalaiset laskut</h2>
             <button onclick="startQuiz('mixed', 100)">Sekalaiset laskut 0-100</button>
         </div>
+
         <div id="quiz-page" style="display:none;">
             <div id="question-container"></div>
             <div id="answer-buttons"></div>
-            <button id="back-button" onclick="goBack()">Palaa takaisin</button>
+            <button id="back-button" onclick="goBack()">Keskeytä ja palaa etusivulle</button>
         </div>
+
         <div id="result-page" style="display:none;">
-            <div id="result-text"></div>
-            <button onclick="restartQuiz()">Kokeile uudestaan</button>
-            <button id="back-button-results" onclick="goBack()">Palaa takaisin</button>
+            <button id="back-button-results" onclick="goBack()">Keskeytä ja palaa etusivulle</button>
+            <h1>Tulokset</h1>
+            <p id="result-text"></p>
+            <button onclick="restartQuiz()">Aloita alusta</button>
         </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
