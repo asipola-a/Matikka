@@ -27,48 +27,23 @@ function generateQuestions(type, number) {
 
         if (type === 'plus') {
             correctAnswer = a + b;
-            if (Math.random() > 0.5) {
-                questionText = `${a} + ${b} = ?`;
-            } else {
-                questionText = `${a} + ? = ${correctAnswer}`;
-                correctAnswer = b;
-            }
+            questionText = Math.random() > 0.5 ? `${a} + ${b} = ?` : `${a} + ? = ${correctAnswer}`;
         } else if (type === 'minus') {
             if (a < b) [a, b] = [b, a];
             correctAnswer = a - b;
-            if (Math.random() > 0.5) {
-                questionText = `${a} - ${b} = ?`;
-            } else {
-                questionText = `${a} - ? = ${correctAnswer}`;
-                correctAnswer = b;
-            }
+            questionText = Math.random() > 0.5 ? `${a} - ${b} = ?` : `${a} - ? = ${correctAnswer}`;
         } else if (type === 'multiply') {
             correctAnswer = a * b;
-            if (Math.random() > 0.5) {
-                questionText = `${a} × ${b} = ?`;
-            } else {
-                questionText = `${a} × ? = ${correctAnswer}`;
-                correctAnswer = b;
-            }
+            questionText = Math.random() > 0.5 ? `${a} × ${b} = ?` : `${a} × ? = ${correctAnswer}`;
         } else if (type === 'mixed') {
-            let operation = Math.random() > 0.5 ? 'plus' : 'minus';
+            const operation = Math.random() > 0.5 ? 'plus' : 'minus';
             if (operation === 'plus') {
                 correctAnswer = a + b;
-                if (Math.random() > 0.5) {
-                    questionText = `${a} + ${b} = ?`;
-                } else {
-                    questionText = `${a} + ? = ${correctAnswer}`;
-                    correctAnswer = b;
-                }
+                questionText = Math.random() > 0.5 ? `${a} + ${b} = ?` : `${a} + ? = ${correctAnswer}`;
             } else {
                 if (a < b) [a, b] = [b, a];
                 correctAnswer = a - b;
-                if (Math.random() > 0.5) {
-                    questionText = `${a} - ${b} = ?`;
-                } else {
-                    questionText = `${a} - ? = ${correctAnswer}`;
-                    correctAnswer = b;
-                }
+                questionText = Math.random() > 0.5 ? `${a} - ${b} = ?` : `${a} - ? = ${correctAnswer}`;
             }
         }
         
