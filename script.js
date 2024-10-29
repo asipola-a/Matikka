@@ -16,11 +16,10 @@ function startQuiz(type, number) {
 }
 
 function showPage(pageId) {
-    // Piilottaa kaikki sivut
     document.getElementById('welcome-page').style.display = 'none';
     document.getElementById('quiz-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'none';
-    // Näyttää vain valitun sivun
+
     document.getElementById(pageId).style.display = 'block';
 }
 
@@ -110,15 +109,16 @@ function showResults() {
 }
 
 function goBack() {
-    // Palautetaan peli alkuun
     currentQuestionIndex = 0;
     score = 0;
+    questions = []; // Tyhjennetään kysymykset palatessa aloitussivulle
     showPage('welcome-page');
 }
 
 function restartQuiz() {
     currentQuestionIndex = 0;
     score = 0;
-    showQuestion();
+    questions = generateQuestions(quizType, maxNumber); // Ladataan kysymykset uudelleen
     showPage('quiz-page');
+    showQuestion();
 }
