@@ -11,14 +11,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Mukauttaa näytön korkeuden */
-    padding: 20px; /* Pieni sisennys reunoille */
+    min-height: 100vh;
+    padding: 20px;
     box-sizing: border-box;
 }
 
 #header-image {
-    width: 30%; /* Skaalaa suhteellisesti */
-    max-width: 150px;
+    width: 30%; /* Skaalaa suhteessa näytön kokoon */
     height: auto;
     margin-bottom: 20px;
 }
@@ -32,21 +31,27 @@ button {
     background-color: #00796b;
     border: none;
     color: white;
-    padding: 10px 20px; /* Muokataan pienemmäksi */
-    margin: 5px 0;
+    padding: 15px 30px;
+    margin: 10px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    width: 80%; /* Skaalautuva leveys */
-    max-width: 300px; /* Maksimikoko */
+    width: 80%;
+    max-width: 300px; /* Maksimileveys suuremmille näytöille */
 }
 
 button:hover {
     background-color: #004d40;
 }
 
-#question-container, #answer-buttons {
+#question-container {
     margin-bottom: 20px;
+    font-size: 18px; /* Selkeämpi kysymyksille */
+}
+
+#answer-buttons {
+    margin-bottom: 20px;
+    width: 100%;
 }
 
 #answer-buttons button {
@@ -56,7 +61,7 @@ button:hover {
     color: white;
     padding: 10px;
     margin: 5px auto;
-    width: 100%; /* Leveys mukautuu pienille näytöille */
+    width: 80%;
     max-width: 250px;
     font-size: 16px;
     border-radius: 5px;
@@ -81,22 +86,47 @@ button:hover {
     background-color: #e64a19;
 }
 
-/* Media query pienemmille näytöille */
-@media (max-width: 768px) {
+#result-page h1 {
+    font-size: 24px;
+}
+
+#version {
+    position: absolute;
+    bottom: 10px;
+    font-size: 14px;
+    color: #00796b;
+}
+
+/* Responsiivisuus: puhelimille ja pienille näytöille */
+@media (max-width: 600px) {
     #header-image {
-        width: 50%; /* Skaalaa kuvaa isommaksi, jos pieni näyttö */
+        width: 80px;
+        margin-bottom: 10px;
     }
 
     h1 {
-        font-size: 24px; /* Pienennetään otsikkoa */
+        font-size: 24px;
     }
 
     h2 {
-        font-size: 20px; /* Pienennetään alaotsikkoa */
+        font-size: 20px;
     }
 
     button {
-        padding: 10px 15px; /* Pienemmät painikkeet */
         font-size: 14px;
+        padding: 12px 20px;
+    }
+
+    #answer-buttons button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    #question-container {
+        font-size: 16px;
+    }
+
+    #result-page h1 {
+        font-size: 20px;
     }
 }
