@@ -11,36 +11,41 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    position: relative;
+    min-height: 100vh; /* Mukauttaa näytön korkeuden */
+    padding: 20px; /* Pieni sisennys reunoille */
+    box-sizing: border-box;
 }
 
 #header-image {
-    width: 150px;
+    width: 30%; /* Skaalaa suhteellisesti */
+    max-width: 150px;
     height: auto;
     margin-bottom: 20px;
+}
+
+h1, h2 {
+    color: #00796b;
+    margin: 10px 0;
 }
 
 button {
     background-color: #00796b;
     border: none;
     color: white;
-    padding: 15px 30px;
-    margin: 10px;
+    padding: 10px 20px; /* Muokataan pienemmäksi */
+    margin: 5px 0;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
+    width: 80%; /* Skaalautuva leveys */
+    max-width: 300px; /* Maksimikoko */
 }
 
 button:hover {
     background-color: #004d40;
 }
 
-#question-container {
-    margin-bottom: 20px;
-}
-
-#answer-buttons {
+#question-container, #answer-buttons {
     margin-bottom: 20px;
 }
 
@@ -51,7 +56,8 @@ button:hover {
     color: white;
     padding: 10px;
     margin: 5px auto;
-    width: 80%;
+    width: 100%; /* Leveys mukautuu pienille näytöille */
+    max-width: 250px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
@@ -65,27 +71,32 @@ button:hover {
     background-color: #f44336;
 }
 
-#back-button {
+#back-button, #back-button-results {
     background-color: #ff5722;
     margin-top: 20px;
+    padding: 10px 20px;
 }
 
-#back-button:hover {
+#back-button:hover, #back-button-results:hover {
     background-color: #e64a19;
 }
 
-#back-button-results {
-    background-color: #ff5722;
-    margin-top: 20px;
-}
+/* Media query pienemmille näytöille */
+@media (max-width: 768px) {
+    #header-image {
+        width: 50%; /* Skaalaa kuvaa isommaksi, jos pieni näyttö */
+    }
 
-#back-button-results:hover {
-    background-color: #e64a19;
-}
+    h1 {
+        font-size: 24px; /* Pienennetään otsikkoa */
+    }
 
-#version {
-    position: absolute;
-    bottom: 10px;
-    font-size: 14px;
-    color: #00796b;
+    h2 {
+        font-size: 20px; /* Pienennetään alaotsikkoa */
+    }
+
+    button {
+        padding: 10px 15px; /* Pienemmät painikkeet */
+        font-size: 14px;
+    }
 }
