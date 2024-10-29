@@ -11,17 +11,24 @@ function startQuiz(type, number) {
     questions = generateQuestions(type, number);
     score = 0;
     currentQuestionIndex = 0;
-    document.getElementById('welcome-page').style.display = 'none';
-    document.getElementById('quiz-page').style.display = 'block';
-    document.getElementById('result-page').style.display = 'none';
+    showPage('quiz-page');
     showQuestion();
+}
+
+function showPage(pageId) {
+    // Piilottaa kaikki sivut
+    document.getElementById('welcome-page').style.display = 'none';
+    document.getElementById('quiz-page').style.display = 'none';
+    document.getElementById('result-page').style.display = 'none';
+    // Näyttää vain valitun sivun
+    document.getElementById(pageId).style.display = 'block';
 }
 
 function generateQuestions(type, number) {
     let questions = [];
     for (let i = 0; i < maxQuestions; i++) {
         let a = type === 'multiply' ? number : Math.floor(Math.random() * (number + 1));
-        let b = Math.floor(Math.random() * (type === 'multiply' ? 10 : number + 1));  // Kertolaskuissa 0–10
+        let b = Math.floor(Math.random() * (number + 1));
         let correctAnswer;
         let questionText;
 
@@ -46,11 +53,10 @@ function generateQuestions(type, number) {
                 questionText = `${a} - ${b} = ?`;
             }
         }
-
+        
         questions.push({
             question: questionText,
-            answer: correctAnswer,
-            isComplete: !questionText.includes('?')
+            answer: correctAnswer
         });
     }
     return questions;
@@ -60,10 +66,10 @@ function showQuestion() {
     const question = questions[currentQuestionIndex];
     document.getElementById('question-container').textContent = question.question;
     document.getElementById('answer-buttons').innerHTML = '';
-    const answers = [question.answer];
 
+    const answers = [question.answer];
     while (answers.length < 4) {
-        let randomAnswer = Math.floor(Math.random() * (maxNumber + 1));
+        let randomAnswer = Math.floor(Math.random() * (maxNumber * 2 + 1));
         if (!answers.includes(randomAnswer)) {
             answers.push(randomAnswer);
         }
@@ -76,4 +82,43 @@ function showQuestion() {
         button.addEventListener('click', () => selectAnswer(button, answer));
         document.getElementById('answer-buttons').appendChild(button);
     });
+}
+
+function selectAnswer(button, selectedAnswer) {
+    const question = questions[currentQuestionIndex];
+    if (selectedAnswer === question.answer) {
+        score++;
+        button.classList.add('correct');
+    } else {
+        button.classList.add('incorrect');
+    }
+    setTimeout(() => {
+        button.classList.remove('correct', 'incorrect');
+        currentQuestionIndex++;
+        if (currentQuestionIndex < maxQuestions) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }, 1000);
+}
+
+function showResults() {
+    const resultText = `Oikein meni ${score} / ${maxQuestions}. `;
+    document.getElementById('result-text').textContent = resultText + (score >= 15 ? 'Hienosti laskettu!' : score < 5 ? 'Nyt pitäisi kyllä harjoitella vielä lisää.' : 'Hyvin tehty!');
+    showPage('result-page');
+}
+
+function goBack() {
+    // Palautetaan peli alkuun
+    currentQuestionIndex = 0;
+    score = 0;
+    showPage('welcome-page');
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    showQuestion();
+    showPage('quiz-page');
 }
